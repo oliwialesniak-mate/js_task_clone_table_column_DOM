@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Index of the column we want to clone (Position = 1)
   const cloneIndex = 1;
-  // Insert before last column (Salary = last)
-  const insertIndex = thead.children.length - 1;
+  // Insert before "Office" column (index 2)
+  const insertIndex = 2;
 
   // Clone header cell
   const newHeadCell = thead.children[cloneIndex].cloneNode(true);
