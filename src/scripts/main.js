@@ -1,27 +1,31 @@
 'use strict';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const table = document.querySelector("table");
-  const thead = table.querySelector("thead tr");
-  const tbody = table.querySelector("tbody");
-  const tfoot = table.querySelector("tfoot tr");
+document.addEventListener('DOMContentLoaded', () => {
+  const table = document.querySelector('table');
+  if (!table) return; // Guard if no table exists
 
-  // Index of the column we want to clone (Position = 1)
-  const cloneIndex = 1;
-  // Insert before "Office" column (index 2)
-  const insertIndex = 2;
+  const cloneIndex = 1; // Column to clone
 
-  // Clone header cell
-  const newHeadCell = thead.children[cloneIndex].cloneNode(true);
-  thead.insertBefore(newHeadCell, thead.children[insertIndex]);
-
-  // Clone each row cell in tbody
-  tbody.querySelectorAll("tr").forEach(row => {
+  // Helper function to clone cells in a given row
+  function cloneRowCells(row) {
+    if (!row || row.children.length <= cloneIndex) return; // Guard for short rows
     const newCell = row.children[cloneIndex].cloneNode(true);
-    row.insertBefore(newCell, row.children[insertIndex]);
+    const insertPos = row.children.length - 1; // Insert before last cell
+    row.insertBefore(newCell, row.children[insertPos]);
+  }
+
+  // Handle THEAD
+  if (table.tHead) {
+    Array.from(table.tHead.rows).forEach(cloneRowCells);
+  }
+
+  // Handle each TBODY
+  Array.from(table.tBodies).forEach((tbody) => {
+    Array.from(tbody.rows).forEach(cloneRowCells);
   });
 
-  // Clone footer cell
-  const newFootCell = tfoot.children[cloneIndex].cloneNode(true);
-  tfoot.insertBefore(newFootCell, tfoot.children[insertIndex]);
+  // Handle TFOOT
+  if (table.tFoot) {
+    Array.from(table.tFoot.rows).forEach(cloneRowCells);
+  }
 });
